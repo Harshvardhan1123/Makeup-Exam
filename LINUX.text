@@ -1,0 +1,56 @@
+mkdir company-devops-platform
+cd company-devops-platform
+mkdir configs deployments policies reports artifacts backup
+touch configs/deployment.yaml
+touch configs/pipeline.yaml
+touch configs/security.conf
+sudo useradd developer
+sudo useradd tester
+sudo useradd devopsadmin
+sudo groupadd developers
+sudo groupadd operations
+
+sudo usermod -aG developers developer
+
+sudo usermod -aG developers tester
+
+sudo usermod -aG operations devopsadmin
+
+sudo chown -R :developers company-devops-platform
+
+sudo chmod -R 770 company-devops-platform
+
+sudo setfacl -m u:devopsadmin:rwx company-devops-platform
+
+cp configs/deployment.yaml \
+backup/deployment_$(date +%F_%H-%M-%S).yaml
+
+cp configs/pipeline.yaml \
+backup/pipeline_$(date +%F_%H-%M-%S).yaml
+
+cp configs/security.conf \
+backup/security_$(date +%F_%H-%M-%S).conf
+
+tree
+
+sleep 500 &
+
+ps -ef
+
+pstree
+
+kill PID
+
+tar -czvf company-devops-platform.tar.gz company-devops-platform
+
+sudo apt install tree
+
+sudo apt install docker.io
+
+docker ps
+
+
+docker run -d \
+--name sonarqube \
+-p 9000:9000 \
+sonarqube:lts-community
