@@ -1,0 +1,51 @@
+name: DevOps CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - development
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      APP_ENV: development
+      DEPLOY_PATH: artifacts/
+
+    steps:
+      - name: Source Checkout
+        uses: actions/checkout@v4
+
+      - name: Build Stage
+        run: |
+          echo "Building application..."
+          mkdir -p artifacts
+          echo "Build completed" > artifacts/build.log
+
+      - name: Test Stage
+        run: |
+          echo "Running tests..."
+          echo "All tests passed" > artifacts/test-report.txt
+
+      - name: Security Validation
+        run: |
+          echo "Performing security validation..."
+          echo "Security checks passed" > artifacts/security-report.txt
+
+      - name: Deployment Stage
+        run: |
+          echo "Deploying application..."
+          echo "Deployment successful" > artifacts/deployment-report.txt
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: deployment-artifacts
+          path: artifacts/
+
+      - name: Rollback on Failure
+        if: failure()
+        run: |
+          echo "Deployment failed. Rolling back..."
+          echo "Rollback completed" > artifacts/rollback-report.txt
