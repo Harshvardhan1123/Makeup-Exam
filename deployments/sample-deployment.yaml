@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: secure-app
+  labels:
+    version: v1.0
+
+spec:
+  template:
+    spec:
+      securityContext:
+        runAsUser: 1000
+
+      containers:
+        - name: app-container
+          image: nginx:v1.25
+
+          securityContext:
+            privileged: false

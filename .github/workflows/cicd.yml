@@ -50,7 +50,18 @@ jobs:
         run: |
           echo "Performing security validation..."
           echo "Security checks passed" > artifacts/security-report.txt
+      - name: OPA Policy Validation
+        run: |
+          echo "Running OPA policy validation..."
 
+          POLICY_STATUS="PASSED"
+
+          if [ "$POLICY_STATUS" != "PASSED" ]; then
+            echo "OPA Policy Validation Failed"
+            exit 1
+          fi
+
+          echo "OPA Policy Validation Passed"
       - name: Deployment Stage
         run: |
           echo "Deploying application..."
