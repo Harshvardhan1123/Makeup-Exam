@@ -1,1 +1,1 @@
-This is development branch content
+Conflict resolved between staging and development
